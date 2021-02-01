@@ -1,31 +1,23 @@
 <!--  -->
 <template>
-  <el-cascader v-model="path" :options="categorys" expand-trigger="hover" clearable placeholder="请选择分类！"
-               ref="category" filterable separator="=>"
-               :props="defaultProps" @change="$emit('update:categoryPath',path)" style="width: 100%"></el-cascader>
+  <el-tree :data="menus" :props="defaultProps" accordion node-key="catId" @node-click="nodeClick">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+        </span>
+  </el-tree>
 </template>
 
 <script>
 // import com from ''
 export default {
   components: {},
-  props: {
-    categoryPath: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
   data () {
     return {
-      categorys: [],
+      menus: [],
       defaultProps: {
-        value: 'catId',
         children: 'children',
         label: 'name'
-      },
-      path: this.categoryPath
+      }
     }
   },
   // 计算属性
@@ -35,18 +27,23 @@ export default {
   watch: {
   },
   methods: {
+    nodeClick (data, node, component) {
+      if (node.level === 3) {
+        this.$emit('treeNodeClick', data, node, component)
+      }
+    }
   },
   // 创建完成 （可以访问当前this）
   created () {
-  },
-  // 挂载完成（可以访问DOM）
-  mounted () {
     this.$http({
       url: this.$http.adornUrl('commodity/category/list/tree'),
       method: 'get'
     }).then(({data}) => {
-      this.categorys = data.data
+      this.menus = data.data
     })
+  },
+  // 挂载完成（可以访问DOM）
+  mounted () {
   },
   // 创建之前
   beforeCreate () {},

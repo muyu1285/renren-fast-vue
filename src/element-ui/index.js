@@ -72,6 +72,7 @@ import {
   Aside,
   Main,
   Footer,
+  Link,
   Loading,
   MessageBox,
   Message,
@@ -80,6 +81,7 @@ import {
 
 Vue.use(Pagination)
 Vue.use(Dialog)
+Vue.use(Link)
 Vue.use(Autocomplete)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
